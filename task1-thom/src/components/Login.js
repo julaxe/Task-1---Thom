@@ -1,12 +1,11 @@
 import React, {useRef, useState} from 'react'
 import { useAuth } from '../context/AuthContext'
-import { Link, useHistory} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
-export default function Signup() {
+export default function Login() {
     const emailRef = useRef()
     const passwordRef = useRef()
-    const passwordConfirmRef = useRef()
-    const {signup} = useAuth()
+    const {login} = useAuth()
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false) 
     const history = useHistory()
@@ -14,17 +13,13 @@ export default function Signup() {
     async function handleSubmit(e) {
         e.preventDefault()
 
-        if(passwordRef.current.value !== passwordConfirmRef.current.value) {
-            return setError('Passwords do not match')
-        }
-
         try {
             setError('')
             setLoading(true)
-            await signup(emailRef.current.value, passwordRef.current.value)
+            await login(emailRef.current.value, passwordRef.current.value)
             history.push('/')
         }catch{
-            setError('Failed to create an account')
+            setError('Failed to log in')
         }
         setLoading(false)
     }
@@ -32,7 +27,7 @@ export default function Signup() {
         <div>
              <section className="App h-screen w-full flex justify-center items-center bg-green-500">
                 <div className="w-full max-w-md bg-white" >
-                    <h1 className = "px-8 pb-8 block font-bold text-3xl text-center align-middle">Sign Up</h1>
+                    <h1 className = "px-8 pb-8 block font-bold text-3xl text-center align-middle">Log In</h1>
                     {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                     <strong className="font-bold">Holy smokes! </strong>
                     <span className="block sm:inline">{error}</span>
@@ -47,18 +42,17 @@ export default function Signup() {
                     </div>
                     <div className="px-4 pb-4">
                         <label htmlFor="password" className="text-sm block font-bold pb-2">PASSWORD</label>
-                        <input type="password" name="password"  ref={passwordRef} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-blue-300" placeholder="Enter your password" required/>
-                    </div>
-                    <div className="px-4 pb-4">
-                        <label htmlFor="passwordConfirmation" className="text-sm block font-bold pb-2">PASSWORD CONFIRMATION</label>
-                        <input type="password" name="passwordConfirmation" ref={passwordConfirmRef} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-blue-300" placeholder="Enter your password again" required/>
+                        <input type="password" name="password"  ref={passwordRef} className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-blue-300" placeholder="Enter your password" required />
                     </div>
                     <div>
-                        <button disabled={loading}  type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Sign In</button>
+                        <button disabled={loading}  type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Log In</button>
                     </div>
                     </form>
                     <div className= "items-center px-4 bg-white">
-                        Already have an account? <Link to="/login" className="underline">Log In</Link>
+                     <Link to="/forgot-password" className="underline">Forgot Password?</Link>
+                    </div>
+                    <div className= "items-center px-4 bg-white">
+                        Need an account? <Link to="/signup" className="underline">Sign Up</Link>
                     </div>
                 </div>
             </section>
